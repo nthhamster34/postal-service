@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="title-container">
+        <h1>Postal Service Package Manager</h1>
+        <hr>
+    </div>
+    
+    <div class="container">        
+        <div class="action-container">
+            <h2><%= title %></h2>
+
+            <% if (pageType == "view") { %>
+            <a class="button" href="/print/<% if (typeof package != 'undefined') { %><%= package.ID %><% } %>">Print Label</a>
+            <% } %>
+        </div>         
+        
+        <form method="POST" action="#">
+            <% if (pageType != "new") { %>
+            <div class="input-row">
+              <div class="input-group">
+                  <label for="TrackingNumber">Tracking Number</label>
+                  <input id="TrackingNumber" type="text" name="TrackingNumber" class="readonly-input" value="<% if (package.TrackingNumber) { %><%= package.TrackingNumber %><% } %>" required >
+              </div>
+
+              <div class="input-group">
+                  <label for="ShippingCost">Shipping Cost</label>
+                  <input id="ShippingCost" type="text" class="readonly-input" value="<% if (typeof package != 'undefined') { %><%= package.calculateCost().toFixed(2) %><% } %>" required >
+              </div>
+            </div>
+            <% } %>
+
+            <div class="input-row">
+              <div class="input-group">
+                  <label for="SenderName">Sender Name</label>
+                  <input id="SenderName" type="text" name="SenderName" class="<% if (pageType == 'view') { %> readonly-input <% } %>" value="<% if (typeof package != 'undefined') { %><%= package.SenderName %><% } %>" required >
+              </div>
+
+              <div class="input-group">
+                  <label for="SenderAddress">Sender Address</label>
+                  <input id="SenderAddress" type="text" name="SenderAddress" class="<% if (pageType == 'view') { %> readonly-input <% } %>" value="<% if (typeof package != 'undefined') { %><%= package.SenderAddress %><% } %>" required >
+              </div>
+            </div>
+    
+            <div class="input-row">
+              <div class="input-group">
+                  <label for="ReceiverName">Receiver Name</label>
+                  <input id="ReceiverName" type="text" name="ReceiverName" class="<% if (pageType == 'view') { %> readonly-input <% } %>" value="<% if (typeof package != 'undefined') { %><%= package.ReceiverName %><% } %>" required >
+              </div>
+
+              <div class="input-group">
+                  <label for="ReceiverAddress">Receiver Address</label>
+                  <input id="ReceiverAddress" type="text" name="ReceiverAddress" class="<% if (pageType == 'view') { %> readonly-input <% } %>" value="<% if (typeof package != 'undefined') { %><%= package.ReceiverAddress %><% } %>" required >
+              </div>
+            </div>
+
+            <div class="input-row">
+              <div class="input-group-3">
+                  <label for="Weight">Weight (kg)</label>
+                  <input id="Weight" type="number" name="Weight" step="0.01" min="0" class="<% if (pageType == 'view') { %> readonly-input <% } %>" value="<% if (typeof package != 'undefined') { %><%= package.Weight %><% } %>" required >
+              </div>
+
+              <div class="input-group-3">
+                  <label for="CostPerUnitWeight">Cost Per Unit Weight</label>
+                  <input id="CostPerUnitWeight" type="number" step="0.01" min="0" class="<% if (pageType == 'view') { %> readonly-input <% } %>" name="CostPerUnitWeight" value="<% if (typeof package != 'undefined') { %><%= package.CostPerUnitWeight %><% } %>" required >
+              </div>
+
+              <div class="input-group-3">
+                  <label for="FlatFee">Flat Fee</label>
+                  <input id="FlatFee" type="number" step="0.01" min="0" name="FlatFee" class="<% if (pageType == 'view') { %> readonly-input <% } %>" value="<% if (typeof package != 'undefined') { %><%= package.FlatFee %><% } %>" required >
+              </div>
+            </div>
+
+            <div class="input-row">
+              <% if (pageType != "new") { %>
+              <div class="input-group">
+                  <label for="Status">Status</label>
+                  <select id="Status" name="Status" class="<% if (pageType != 'edit') { %> readonly-input <% } %>" required>
+                    <option value="">Select</option>
+                    <option value="Created" <% if (typeof package != 'undefined' && package.Status == 'Created') { %>selected<% } %> >Created</option>
+                    <option value="Shipped" <% if (typeof package != 'undefined' && package.Status == 'Shipped') { %>selected<% } %> >Shipped</option>
+                    <option value="In-Transit" <% if (typeof package != 'undefined' && package.Status == 'In-Transit') { %>selected<% } %> >In Transit</option>
+                    <option value="Delivered" <% if (typeof package != 'undefined' && package.Status == 'Delivered') { %>selected<% } %> >Delivered</option>
+                  </select>
+              </div>    
+              <% } %>        
+
+              <div class="input-group">
+                  <label for="ShippingMethod">Shipping Method</label>
+                  <select id="ShippingMethod" name="ShippingMethod" class="<% if (pageType == 'view') { %> readonly-input <% } %>" required>
+                    <option value="">Select</option>
+                    <option value="One-Day" <% if (typeof package != 'undefined' && package.ShippingMethod == 'One-Day') { %>selected<% } %> >One Day</option>
+                    <option value="Two-Day" <% if (typeof package != 'undefined' && package.ShippingMethod == 'Two-Day') { %>selected<% } %> >Two Day</option>
+                  </select>
+              </div>
+            </div>
+    
+            
+            <div class="input-group">              
+              <% if (pageType != "view") { %>
+              <button type="submit">
+                <% if (pageType === "new") { %>
+                  + Create New Package
+                <% } else if (pageType === "edit") { %>
+                  Save Package
+                <% } %>
+              </button>
+              <% } else { %>    
+              <a class="button" href="/edit/<% if (typeof package != 'undefined') { %><%= package.ID %><% } %>">Edit</a>
+              <% } %> 
+
+              <a class="button secondary" href="/">Back To List</a>
+            </div>            
+        </form>
+    </div>
+
+  </body>
+</html>
+

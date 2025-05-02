@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+    <div class="title-container">
+        <h1>Postal Service Package Manager</h1>
+        <hr>
+    </div>
+    <div class="container">
+        <div class="package-label">
+            <div class="label-header">
+                <h1>Shipping Label</h1>
+            </div>
+            <div class="label-body">
+                <div class="sender-info">
+                    <h2>Sender Information</h2>
+                    <p><strong>Name:</strong> <% if (typeof package != 'undefined') { %><%= package.SenderName %><% } %></p>
+                    <p><strong>Address:</strong> <% if (typeof package != 'undefined') { %><%= package.SenderAddress %><% } %></p>
+                </div>
+                <div class="receiver-info">
+                    <h2>Receiver Information</h2>
+                    <p><strong>Name:</strong> <% if (typeof package != 'undefined') { %><%= package.ReceiverName %><% } %></p>
+                    <p><strong>Address:</strong> <% if (typeof package != 'undefined') { %><%= package.ReceiverAddress %><% } %></p>
+                </div>
+                <div class="package-details">
+                    <h2>Package Details</h2>
+                    <p><strong>Tracking #:</strong> <% if (typeof package != 'undefined') { %><%= package.TrackingNumber %><% } %></p>
+                    <p><strong>Weight:</strong> <% if (typeof package != 'undefined') { %><%= package.Weight %><% } %> kg</p>
+                    <p><strong>Status:</strong> <% if (typeof package != 'undefined') { %><%= package.Status %><% } %></p>
+                </div>
+            </div>        
+        </div>
+
+        <br>
+
+        <div class="input-group" style="text-align: center;">              
+            <a class="button" href="/view/<% if (typeof package != 'undefined') { %><%= package.ID %><% } %>">Back</a>
+        </div>   
+    </div>
+</body>
+</html>
